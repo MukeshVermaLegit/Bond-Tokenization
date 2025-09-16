@@ -1,66 +1,21 @@
-## Foundry
+# Bond-Tokenization
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+A Proof of Concept for a tokenized U.S. Treasury-style bond built in Solidity with Foundry.
 
-Foundry consists of:
+##  Features
+- ERC-20 based BondToken
+- Fixed face value & coupon rate
+- Interest accrues monthly
+- Claim interest anytime before maturity
+- Redeem principal + final interest at maturity
+- Includes MockUSDC for deposits/payouts
+- Fully tested with Foundry
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
-```
-
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+##  Quick Start
+```bash
+foundryup
+git clone https://github.com/MukeshVermaLegit/Bond-Tokenization.git
+cd Bond-Tokenization
+forge install
+forge build
+forge test
