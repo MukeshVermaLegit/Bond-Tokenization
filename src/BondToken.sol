@@ -7,19 +7,16 @@ import {IERC20} from "openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 contract BondToken is ERC20 {
     IERC20 public usdc; // Mock USDC used for deposits & payouts
 
-    uint256 public faceValue;     // Principal per bond
-    uint256 public couponRate;    // Annual interest (e.g., 5% = 500 -> basis points)
-    uint256 public maturityDate;  // UNIX timestamp maturity
+    uint256 public faceValue; // Principal per bond
+    uint256 public couponRate; // Annual interest (e.g., 5% = 500 -> basis points)
+    uint256 public maturityDate; // UNIX timestamp maturity
 
     uint256 public lastCouponTimestamp;
     mapping(address => uint256) public claimedInterest;
 
-    constructor(
-        address _usdc,
-        uint256 _faceValue,
-        uint256 _couponRate,
-        uint256 _maturityDate
-    ) ERC20("BondToken", "BOND") {
+    constructor(address _usdc, uint256 _faceValue, uint256 _couponRate, uint256 _maturityDate)
+        ERC20("BondToken", "BOND")
+    {
         require(_maturityDate > block.timestamp, "Invalid maturity");
         usdc = IERC20(_usdc);
         faceValue = _faceValue;
@@ -53,14 +50,12 @@ contract BondToken is ERC20 {
         require(interest > 0, "No interest");
 
         claimedInterest[msg.sender] += interest;
-        
+
         // For mock USDC, we need to mint the interest payment
         // In production, this would require the contract to be pre-funded
-        (bool success, ) = address(usdc).call(
-            abi.encodeWithSignature("mint(address,uint256)", address(this), interest)
-        );
+        (bool success,) = address(usdc).call(abi.encodeWithSignature("mint(address,uint256)", address(this), interest));
         require(success, "Mint failed");
-        
+
         require(usdc.transfer(msg.sender, interest), "Transfer failed");
     }
 
@@ -79,14 +74,11 @@ contract BondToken is ERC20 {
         // For mock USDC, we need to mint the interest payment
         // In production, this would require the contract to be pre-funded
         if (interest > 0) {
-            (bool success, ) = address(usdc).call(
-                abi.encodeWithSignature("mint(address,uint256)", address(this), interest)
-            );
+            (bool success,) =
+                address(usdc).call(abi.encodeWithSignature("mint(address,uint256)", address(this), interest));
             require(success, "Mint failed");
         }
-        
+
         require(usdc.transfer(msg.sender, principal + interest), "Redeem failed");
     }
 }
-
-
